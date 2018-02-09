@@ -1,10 +1,13 @@
 {
-  "name": "graphql",
+  "name": "graphql-rethinkdb",
   "version": "1.0.0",
   "description": "graphql-rethinkdb-server",
   "main": "server.js",
   "dependencies": {
-    "rethinkdb-wrapper": "^1.0.1"
+    "rethinkdb-wrapper": "^1.0.1",
+    "express": "^4.16.2",
+    "graphql": "^0.13.0",
+    "express-graphql": "^0.6.11"
   },
   "devDependencies": {},
   "scripts": {
