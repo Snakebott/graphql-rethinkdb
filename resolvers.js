@@ -14,18 +14,23 @@ class Resolver extends Database{
         super(dbconf);
     }
 
-    /**
-     * get user by identifier
-     * @param {number} id user identifier
-     */
-    async fetchUser(id){
-        try {
-            let reql = await r.table('users').filter({id: Number.parseInt(id)});
-            let user = await this.select(reql);
-            return (user.length)? user[0] : null; 
-        } catch (error) {
-            this.logger.error(`Error fetch user: ${error.message}`);
-            this.logger.debug(error);
+    async resolvers(){
+        return {
+            Query: {
+                user: async (_, {id})=>{
+                    let reql = r.table('users').filter({id: Number.parseInt(id)});
+                    try {
+                        this.logger.info(`get user with id ${id}`);
+                        let result = await this.select(reql);
+                        this.logger.debug(result);
+                        return result;
+                    } catch (error) {
+                        this.logger.error(`Error: ${error.message}`);
+                        this.logger.debug(error);
+                        return null;
+                    }
+                }
+            }
         }
     }
 
