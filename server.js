@@ -1,12 +1,12 @@
-
 const express = require('express');
 const {Resolver} = require('./resolvers');
 const graphqlHTTP = require('express-graphql');
-const {schema, setResolver} = require('./schema');
+const GQTools = require('graphql-tools');
+const typeDefs = require('./schema');
 
 let config = {
     host: 'localhost',
-    db: 'databas01',
+    db: 'database01',
     user: 'admin',
     password: 'password'
 };
@@ -17,7 +17,9 @@ const app = express();
 let start = async ()=>{
     await db.open();
     (!db.conn.open)? process.exit(1) : null;
-    setResolver(db);
+    let resolvers = await db.resolvers();
+    console.log(resolvers);
+    let schema = await GQTools.makeExecutableSchema({typeDefs, resolvers});
     await app.use('/', graphqlHTTP({
         schema: schema,
         graphiql: true
